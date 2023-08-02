@@ -1,22 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString, Max, Min } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsNumber, IsString } from 'class-validator';
 
 
 export class AddItemDto {
     @ApiProperty()
     @IsString()
-    @IsNotEmpty()
     name: string;
 
     @ApiProperty()
+    @Type(() => Number)
     @IsNumber()
-    @Min(0)
-    @Max(3)
-    @IsNotEmpty()
     rarity: number;
 
     @ApiProperty()
     @IsString()
-    @IsNotEmpty()
     design: string;
 }

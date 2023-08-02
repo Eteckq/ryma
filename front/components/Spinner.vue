@@ -6,16 +6,19 @@
         <div v-if="displayed"
             :style="{ 'transform': `translateX(-${shift}px)`, 'transition-duration': `${getAnimationTime}ms` }"
             v-resize="generateDisplayed" class="p-1 flex flex-nowrap gap-2 transform bezier">
+            
             <!-- Items Box -->
-            <div :style="getShadow(item.color)" v-for="item in displayed" class="w-24 min-w-[6rem] h-24 bg-gray-200 border">
-                <img :src="`/${item.img}`" alt="" srcset="">
+            <div :class="[{'opacity-25': isOver && winningItem != item}]" :style="{backgroundImage: `url(/api/${item.img})`,...getShadow(item.color)}" v-for="item in displayed" class="bg-contain transition-all duration-300 z-10 w-24 min-w-[6rem] h-24 border">
+
             </div>
         </div>
     </div>
 </template>
   
 <script>
+import global from '~/mixins/global'
 export default {
+    mixins: [global],
     props: {
         content: {
             type: Array,
@@ -48,6 +51,7 @@ export default {
             const l = 8
 
             const fitItems = Math.ceil(width / itemWidth)
+            this.shift = itemWidth * l * fitItems;
 
             this.displayed = []
             for (let i = 0; i < fitItems / 2 - 1; i++) {
@@ -57,14 +61,6 @@ export default {
             for (let i = 0; i < fitItems * l + fitItems / 2; i++) {
                 this.displayed.push(this.getRandomItemFromContent())
             }
-            this.shift = itemWidth * l * fitItems;
-        },
-        getShadow(color) {
-            if (!color) return null
-            return `
-            -webkit-box-shadow: inset 0px -15px 30px 5px ${color}; 
-            box-shadow: inset 0px -15px 30px 5px ${color};
-            `
         },
         getRandomItemFromContent() {
             const ponderation = this.content.reduce((acc, item) => acc + item.frequency, 0);
@@ -78,15 +74,18 @@ export default {
             }
         },
         startAnimation(winningItem) {
+            this.isOver = false
             this.winningItem = winningItem
             this.generateDisplayed()
-            this.animate = true
-            this.shift = 0
             setTimeout(() => {
-                this.isOver = true
-                this.animate = false
-                this.$emit('over')
-            }, this.animationTime);
+                this.animate = true
+                this.shift = 0
+                setTimeout(() => {
+                    this.isOver = true
+                    this.animate = false
+                    this.$emit('over')
+                }, this.animationTime);
+            }, 250);
         }
     }
 }

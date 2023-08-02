@@ -2,23 +2,29 @@
     <div>
         <!-- Spinner -->
         <div class="px-2 md:px-28 my-8" v-if="content">
-            <Spinner ref="spinner" @over="displayWin" :content="content" :winningItem="winningItem" />
+            <Spinner ref="spinner" @over="displayWin" :content="content" />
         </div>
         <!-- Spin button -->
-        <div v-if="!displayed && !spinning"
+        <div v-if="!spinning"
             class="cursor-pointer text-center hover:bg-blue-500 transition-all duration-200 py-2 px-4 text-3xl bg-blue-400 text-white rounded "
             @click="spin">Spin!</div>
         <!-- Item won -->
         <div class="mx-auto flex justify-center" v-if="displayed">
-            <div :style="getShadow(winningItem.color)" class="w-24 min-w-[6rem] h-24 bg-gray-200 border">
-                <img :src="`/${winningItem.img}`" alt="" srcset="">
+            <div class="border p-4">
+                {{ winningItem.item.name }}
+                {{ winningItem.quality }}/100
+                <p v-if="winningItem.shiny">Shiny</p>
+                <p>Normal</p>
+                Rarity: {{ winningItem.item.rarity }}
             </div>
         </div>
     </div>
 </template>
   
 <script>
+import global from '~/mixins/global'
 export default {
+    mixins: [global],
     data() {
         return {
             content: null,
@@ -32,7 +38,7 @@ export default {
         this.content = []
         for (const item of res.data.items) {
             this.content.push({
-                img: 'icon.png',
+                img: item.design,
                 color: this.getColorFromRarity(item.rarity),
                 frequency: this.getFrequencyFromRarity(item.rarity)
             })
@@ -44,20 +50,14 @@ export default {
             this.spinning = false
         },
         async spin() {
+            this.displayed = false
             const res = await this.$axios.post('/api/collection/1/roll')
-            this.winningItem = {
-                img: 'icon.png',
+            this.winningItem = res.data
+            this.$refs.spinner.startAnimation({
+                img: res.data.item.design,
                 color: this.getColorFromRarity(res.data.item.rarity)
-            }
-            this.$refs.spinner.startAnimation(this.winningItem)
+            })
             this.spinning = true
-        },
-        getShadow(color) {
-            if (!color) return null
-            return `
-          -webkit-box-shadow: inset 0px -15px 30px 5px ${color}; 
-          box-shadow: inset 0px -15px 30px 5px ${color};
-        `
         },
         getFrequencyFromRarity(rarity) {
             switch (rarity) {
@@ -72,21 +72,7 @@ export default {
                 default:
                     return 150
             }
-        },
-        getColorFromRarity(rarity) {
-            switch (rarity) {
-                case 0:
-                    return 'rgba(227, 227, 227,0.75)'
-                case 1:
-                    return 'rgba(25, 182, 255,0.75)'
-                case 2:
-                    return 'rgba(255, 81, 18,0.75)'
-                case 3:
-                    return 'rgba(247, 255, 23,0.75)'
-                default:
-                    return 'gray'
-            }
-        },
+        }
     }
 }
 </script>
