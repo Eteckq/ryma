@@ -7,7 +7,7 @@ import { JwtAuthGuard } from 'src/auth/jwt.guard';
 import { InjectUser } from 'src/auth/user.decorator';
 import { User } from 'src/user/entities/user.entity';
 import { Role } from 'src/auth/role.enum';
-import { Roles } from 'src/auth/roles.decorator';
+import { NeedRole } from 'src/auth/role.decorator';
 
 @Controller('collection')
 @ApiTags('collection')
@@ -25,23 +25,21 @@ export class CollectionController {
   }
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  // @Roles(Role.Admin)
+  @NeedRole(Role.Admin)
   @Post()
   async create(@Body() createCollectionDto: CreateCollectionDto) {
     return await this.collectionService.create(createCollectionDto)
   }
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  // @Roles(Role.Admin)
+  @NeedRole(Role.Admin)
   @Post(':id/item')
   async addItem(@Param('id') id: string, @Body() addItemDto: AddItemDto) {
     return await this.collectionService.createItem(id, addItemDto)
   }
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @NeedRole(Role.User)
   @Post(':id/roll')
   async rollByCollectionId(@InjectUser() user: User, @Param('id') id: string) {
     return await this.collectionService.generateRandomItemForCollection(user, id)

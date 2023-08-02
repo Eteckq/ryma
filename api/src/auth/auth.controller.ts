@@ -6,6 +6,8 @@ import { JwtAuthGuard } from './jwt.guard';
 import { InjectUser } from './user.decorator';
 import { User } from 'src/user/entities/user.entity';
 import { LoginDto } from './dto/login.dto';
+import { NeedRole } from './role.decorator';
+import { Role } from './role.enum';
 
 @Controller('auth')
 @ApiTags('authentication')
@@ -30,7 +32,7 @@ export class AuthController {
   }
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @NeedRole(Role.User)
   @Get('me')
   async me(@InjectUser() user: User){
     return {user}

@@ -3,6 +3,8 @@ import { FileService } from './file.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt.guard';
+import { NeedRole } from 'src/auth/role.decorator';
+import { Role } from 'src/auth/role.enum';
 
 
 
@@ -12,7 +14,7 @@ export class FileController {
   constructor(private readonly fileService: FileService) { }
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @NeedRole(Role.Admin)
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File) {

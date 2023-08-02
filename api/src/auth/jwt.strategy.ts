@@ -20,6 +20,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException("Token expired");
     }
     const user = await this.userService.findOneById(id);
-    done(null, user);
+    return user
   }
 }
