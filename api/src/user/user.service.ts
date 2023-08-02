@@ -1,0 +1,27 @@
+import { ForbiddenException, Inject, Injectable, NotFoundException, forwardRef } from '@nestjs/common';
+import { User } from './entities/user.entity';
+import { Between, EntityNotFoundError, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { LoginDto } from 'src/auth/dto/login.dto';
+
+
+@Injectable()
+export class UserService {
+    constructor(
+        @InjectRepository(User)
+        private readonly userRepository: Repository<User>,
+    ) { }
+
+
+    async getUser(payload: LoginDto) {
+        return await this.userRepository.findOneBy({ pseudo: payload.pseudo })
+    }
+    async createUser(payload: LoginDto) {
+        return await this.userRepository.save({
+            pseudo: payload.pseudo
+        })
+    }
+    async findOneById(id: string) {
+        return await this.userRepository.findOneBy({ id: id })
+    }
+}
