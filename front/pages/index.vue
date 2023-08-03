@@ -1,18 +1,32 @@
 <template>
   <div>
-    <Lottery />
+    <div @click="collection = c" v-for="c of collections" :key="c.id" class="border p-4 " :to="`/admin/collection/${c.id}`">
+        {{ c.name }}
+    </div>
+
+    <Lottery v-if="collection" :collection="collection.id" />
+
+    <!-- mine -->
+    <UserItems :id="$auth.user.id" />
   </div>
 </template>
 
 <script>
 export default {
-  data() {
+ data() {
     return {
-
+      collections: [],
+      collection: null
     }
   },
+  async mounted() {
+    await this.getCollections()
+  },
   methods: {
-
+    async getCollections() {
+      const res = await this.$axios.get('/api/collection')
+      this.collections = res.data
+    },
   }
 }
 </script>

@@ -4,15 +4,6 @@
       <NuxtLink to="/admin/collection" class="mx-4">
         Collection
       </NuxtLink>
-      <!-- <NuxtLink  to="/best" class="mx-4">
-        <font-awesome-icon class="" :icon="['fas', 'fire']" />
-      </NuxtLink>
-      <NuxtLink to="/calendar" class="mx-4">
-        <font-awesome-icon class="" :icon="['fas', 'calendar-days']" />
-      </NuxtLink>
-      <NuxtLink  to="/today" class="mx-4">
-        <font-awesome-icon class="" :icon="['fas', 'calendar-day']" />
-      </NuxtLink> -->
     </div>
   </nav>
 </template>

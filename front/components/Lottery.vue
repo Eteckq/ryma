@@ -10,7 +10,8 @@
             @click="spin">Spin!</div>
         <!-- Item won -->
         <div class="mx-auto flex justify-center" v-if="displayed">
-            <div class="h-full w-full border p-4 bg-contain bg-no-repeat" :style="{backgroundImage: `url(/api/${winningItem.item.design})`}">
+            <div class="h-full w-full border p-4 bg-contain bg-no-repeat"
+                :style="{ backgroundImage: `url(/api/${winningItem.item.design})` }">
                 <p>{{ winningItem.item.name }}</p>
                 <p>{{ winningItem.quality }}/100</p>
                 <p v-if="winningItem.shiny">Shiny</p>
@@ -25,6 +26,12 @@
 import global from '~/mixins/global'
 export default {
     mixins: [global],
+    props: {
+        collection: {
+            type: String,
+            required: true
+        }
+    },
     data() {
         return {
             content: null,
@@ -34,14 +41,11 @@ export default {
         }
     },
     async mounted() {
-        const res = await this.$axios.get('/api/collection/ac4dba92-49d4-4fc5-a985-3d81181ca8b4')
-        this.content = []
-        for (const item of res.data.items) {
-            this.content.push({
-                img: item.design,
-                color: this.getColorFromRarity(item.rarity),
-                frequency: this.getFrequencyFromRarity(item.rarity)
-            })
+        this.fetchCollection()
+    },
+    watch: {
+        collection() {
+            this.fetchCollection()
         }
     },
     methods: {
@@ -49,13 +53,24 @@ export default {
             this.displayed = true
             this.spinning = false
         },
+        async fetchCollection() {
+            const res = await this.$axios.get(`/api/collection/${this.collection}`)
+            this.content = []
+            for (const item of res.data.items) {
+                this.content.push({
+                    img: item.design,
+                    color: item.rarity.color,
+                    frequency: item.rarity.weight
+                })
+            }
+        },
         async spin() {
             this.displayed = false
-            const res = await this.$axios.post('/api/collection/ac4dba92-49d4-4fc5-a985-3d81181ca8b4/roll')
+            const res = await this.$axios.post(`/api/collection/${this.collection}/roll`)
             this.winningItem = res.data
             this.$refs.spinner.startAnimation({
                 img: res.data.item.design,
-                color: this.getColorFromRarity(res.data.item.rarity)
+                color: res.data.item.rarity.color
             })
             this.spinning = true
         },
