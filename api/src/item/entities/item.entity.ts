@@ -11,7 +11,6 @@ export class Item extends CustomBaseEntity {
     name: string
 
     @ManyToOne(() => Rarity, { nullable: false })
-    // @JoinColumn()
     rarity: Rarity
 
     @ManyToOne(() => Collection, (collection) => collection.items)

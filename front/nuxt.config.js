@@ -21,6 +21,7 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
+    "~/assets/style.css"
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -43,6 +44,7 @@ export default {
     '@nuxtjs/pwa',
     '@nuxtjs/auth-next',
     '@nuxtjs/proxy',
+    'vue-toastification/nuxt'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

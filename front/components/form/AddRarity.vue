@@ -1,12 +1,12 @@
 <template>
     <div>
         <h2>Add rarity</h2>
-        <input type="text" v-model="rarity.name">
-        <input type="number" v-model="rarity.weight">
-        <input type="color" v-model="rarity.color">
-        <div @click="addRarity">
+        <FormInput label="Name" v-model="rarity.name" />
+        <FormInput label="Weight" type="number" v-model="rarity.weight" />
+        <input type="color" v-model="rarity.color" />
+        <FormButton :loading="loading" @clicked="addRarity">
             add rarity
-        </div>
+        </FormButton>
     </div>
 </template>
     
@@ -19,6 +19,7 @@ export default {
                 weight: 50,
                 color: "#ffffff"
             },
+            loading: false
             // rarities: []
         }
     },
@@ -31,8 +32,18 @@ export default {
         //     this.rarities = res.data
         // },
         async addRarity() {
-            const res = await this.$axios.post(`/api/item/rarity`, this.rarity)
-            this.$emit('add', res.data)
+            this.loading = true
+            try {
+                const res = await this.$axios.post(`/api/item/rarity`, this.rarity)
+                this.$emit('add', res.data)
+                this.$toast.success('Added!')
+            } catch (error) {
+                if (error.isAxiosError) {
+                    this.$toast.error(error.response.data.message[0])
+                }
+            } finally {
+                this.loading = false
+            }
         },
         uploadedFile(f) {
             this.item.design = f

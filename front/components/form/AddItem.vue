@@ -2,14 +2,14 @@
     <div>
         <FormAddRarity @add="getRarities" />
         <h2>Add item</h2>
-        <input type="text" v-model="item.name">
+        <FormInput label="Name" v-model="item.name" />
         <div @click="item.rarity = rarity.id" v-for="rarity in rarities">
             {{ rarity.name }}
         </div>
         <FileUploader @file="uploadedFile" />
-        <div @click="addItem">
-            add
-        </div>
+        <FormButton :loading="loading" @clicked="addItem">
+            Add
+        </FormButton>
     </div>
 </template>
     
@@ -28,7 +28,8 @@ export default {
                 rarity: null,
                 design: null
             },
-            rarities: []
+            rarities: [],
+            loading: false
         }
     },
     async mounted() {
@@ -40,8 +41,18 @@ export default {
             this.rarities = res.data
         },
         async addItem() {
-            const res = await this.$axios.post(`/api/collection/${this.collection.id}/item`, this.item)
-            this.$emit('add', res.data)
+            this.loading = true
+            try {
+                const res = await this.$axios.post(`/api/collection/${this.collection.id}/item`, this.item)
+                this.$emit('add', res.data)
+                this.$toast.success('Added!')
+            } catch (error) {
+                if (error.isAxiosError) {
+                    this.$toast.error(error.response.data.message[0])
+                }
+            } finally {
+                this.loading = false
+            }
         },
         uploadedFile(f) {
             this.item.design = f

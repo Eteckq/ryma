@@ -1,13 +1,14 @@
 <template>
     <div v-if="collection">
-        {{ collection.name }}
-
-        <div v-for="item of collection.items">
-            {{ item }}
+        <div class="flex gap-4 flex-wrap">
+            <div class="border" v-for="item of collection.items">
+                {{ item.name }} - {{ item.rarity.name }}
+                <img width="32" height="32" :src="`/api/${item.design}`" alt="">
+            </div>
         </div>
 
         <!-- Add item -->
-        <FormAddItem @add="getCollection" :collection="collection"/>
+        <FormAddItem @add="getCollection" :collection="collection" />
     </div>
 </template>
     
