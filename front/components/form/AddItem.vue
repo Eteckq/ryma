@@ -1,5 +1,6 @@
 <template>
     <div>
+        <FormAddRarity @add="getRarities" />
         <h2>Add item</h2>
         <input type="text" v-model="item.name">
         <div @click="item.rarity = rarity.id" v-for="rarity in rarities">
@@ -14,12 +15,17 @@
     
 <script>
 export default {
-    props: ['collection'],
+    props: {
+        collection: {
+            required: true,
+            type: Object
+        }
+    },
     data() {
         return {
             item: {
                 name: "",
-                rarity: 0,
+                rarity: null,
                 design: null
             },
             rarities: []
@@ -35,7 +41,7 @@ export default {
         },
         async addItem() {
             const res = await this.$axios.post(`/api/collection/${this.collection.id}/item`, this.item)
-            this.$emit('add')
+            this.$emit('add', res.data)
         },
         uploadedFile(f) {
             this.item.design = f

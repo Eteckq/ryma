@@ -6,6 +6,7 @@ import { Collection } from 'src/collection/entities/collection.entity';
 import { AddItemDto } from 'src/collection/dto/add-item.dto';
 import { ItemToUser } from './entities/item_user.entity';
 import { Rarity } from './entities/rarity.entity';
+import { AddRarityDto } from './dto/add-rarity.dto';
 
 @Injectable()
 export class ItemService {
@@ -40,8 +41,16 @@ export class ItemService {
     })
   }
 
+  async createRarity(rarityDto: AddRarityDto) {
+    return await this.rarityRepository.save({
+      name: rarityDto.name,
+      weight: rarityDto.weight,
+      color: rarityDto.color,
+    })
+  }
+
   async findAll() {
-    return await this.itemRepository.find({relations: ['rarity']})
+    return await this.itemRepository.find({ relations: ['rarity'] })
   }
 
   async findAllRarity() {

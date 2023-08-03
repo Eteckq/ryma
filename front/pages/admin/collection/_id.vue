@@ -7,7 +7,7 @@
         </div>
 
         <!-- Add item -->
-        <AddItem @add="getCollection" :collection="collection"/>
+        <FormAddItem @add="getCollection" :collection="collection"/>
     </div>
 </template>
     

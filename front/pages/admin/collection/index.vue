@@ -8,13 +8,7 @@
     </div>
 
     <!-- Add collection -->
-    <div>
-      <input type="text" v-model="collection.name">
-      <FileUploader @file="uploadedFile" />
-      <div @click="addCollection">
-        add
-      </div>
-    </div>
+    <FormAddCollection @add="getCollections" />
   </div>
 </template>
   
@@ -23,7 +17,6 @@ export default {
   data() {
     return {
       collections: [],
-      collection: {}
     }
   },
   async mounted() {
@@ -34,13 +27,6 @@ export default {
       const res = await this.$axios.get('/api/collection')
       this.collections = res.data
     },
-    async addCollection() {
-      const res = await this.$axios.post(`/api/collection`, this.collection)
-      await this.getCollections()
-    },
-    uploadedFile(f) {
-      this.collection.design = f
-    }
   }
 }
 </script>

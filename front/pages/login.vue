@@ -1,6 +1,5 @@
 <template>
     <div>
-        login
         <input type="text" v-model="user.pseudo">
         <div @click="login">login</div>
     </div>
