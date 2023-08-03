@@ -13,13 +13,6 @@ export default {
                 default:
                     return 'gray'
             }
-        },
-        getShadow(color) {
-            if (!color) return null
-            return `
-            -webkit-box-shadow: inset 0px -15px 30px 5px ${color}; 
-            box-shadow: inset 0px -15px 30px 5px ${color};
-            `
-        },
+        }
     }
 }

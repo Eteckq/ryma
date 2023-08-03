@@ -1,6 +1,6 @@
 import { CustomBaseEntity } from 'src/custom-base-entity';
 import { Item } from 'src/item/entities/item.entity';
-import { Entity, Column, PrimaryColumn, BaseEntity, OneToMany, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, OneToMany } from 'typeorm';
 
 @Entity()
 export class Collection extends CustomBaseEntity {

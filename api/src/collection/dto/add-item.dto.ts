@@ -9,9 +9,8 @@ export class AddItemDto {
     name: string;
 
     @ApiProperty()
-    @Type(() => Number)
-    @IsNumber()
-    rarity: number;
+    @IsString()
+    rarity: string;
 
     @ApiProperty()
     @IsString()

@@ -6,9 +6,8 @@
         <div v-if="displayed"
             :style="{ 'transform': `translateX(-${shift}px)`, 'transition-duration': `${getAnimationTime}ms` }"
             v-resize="generateDisplayed" class="p-1 flex flex-nowrap gap-2 transform bezier">
-            
             <!-- Items Box -->
-            <div :class="[{'opacity-25': isOver && winningItem != item}]" :style="{backgroundImage: `url(/api/${item.img})`,...getShadow(item.color)}" v-for="item in displayed" class="bg-contain transition-all duration-300 z-10 w-24 min-w-[6rem] h-24 border">
+            <div :class="{'opacity-25': isOver && item != winningItem}" :style="getShadow(item)" v-for="item in displayed" class="z-10 w-24 min-w-[6rem] h-24 bg-gray-200 border bg-contain">
 
             </div>
         </div>
@@ -16,9 +15,7 @@
 </template>
   
 <script>
-import global from '~/mixins/global'
 export default {
-    mixins: [global],
     props: {
         content: {
             type: Array,
@@ -29,7 +26,7 @@ export default {
         return {
             animate: false,
             isOver: false,
-            animationTime: 10000,
+            animationTime: 1000,
             displayed: null,
             shift: null,
             winningItem: null
@@ -61,6 +58,14 @@ export default {
             for (let i = 0; i < fitItems * l + fitItems / 2; i++) {
                 this.displayed.push(this.getRandomItemFromContent())
             }
+        },
+        getShadow(item) {
+            if (!item.color) return null
+            return `
+            -webkit-box-shadow: inset 0px -15px 30px 5px ${item.color}; 
+            box-shadow: inset 0px -15px 30px 5px ${item.color};
+            background-image: url(/api/${item.img});
+            `
         },
         getRandomItemFromContent() {
             const ponderation = this.content.reduce((acc, item) => acc + item.frequency, 0);

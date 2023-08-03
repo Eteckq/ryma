@@ -9,4 +9,9 @@ export class ItemController {
    async all() {
     return await this.itemService.findAll()
   }
+
+  @Get('rarity')
+  async getRarity(){
+    return await this.itemService.findAllRarity()
+  }
 }

@@ -1,8 +1,8 @@
 import { Collection } from 'src/collection/entities/collection.entity';
-import { Entity, Column, PrimaryColumn, BaseEntity, OneToMany, ManyToOne, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
-import { Rarity } from '../rarity.enum';
+import { Entity, Column, OneToMany, ManyToOne, OneToOne, JoinColumn } from 'typeorm';
 import { ItemToUser } from './item_user.entity';
 import { CustomBaseEntity } from 'src/custom-base-entity';
+import { Rarity } from './rarity.entity';
 
 
 @Entity()
@@ -10,7 +10,8 @@ export class Item extends CustomBaseEntity {
     @Column()
     name: string
 
-    @Column({ default: 0 })
+    @ManyToOne(() => Rarity, { nullable: false })
+    // @JoinColumn()
     rarity: Rarity
 
     @ManyToOne(() => Collection, (collection) => collection.items)

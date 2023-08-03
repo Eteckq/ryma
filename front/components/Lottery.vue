@@ -10,12 +10,12 @@
             @click="spin">Spin!</div>
         <!-- Item won -->
         <div class="mx-auto flex justify-center" v-if="displayed">
-            <div class="border p-4">
-                {{ winningItem.item.name }}
-                {{ winningItem.quality }}/100
+            <div class="h-full w-full border p-4 bg-contain bg-no-repeat" :style="{backgroundImage: `url(/api/${winningItem.item.design})`}">
+                <p>{{ winningItem.item.name }}</p>
+                <p>{{ winningItem.quality }}/100</p>
                 <p v-if="winningItem.shiny">Shiny</p>
                 <p>Normal</p>
-                Rarity: {{ winningItem.item.rarity }}
+                <p>Rarity: {{ winningItem.item.rarity }}</p>
             </div>
         </div>
     </div>
@@ -34,7 +34,7 @@ export default {
         }
     },
     async mounted() {
-        const res = await this.$axios.get('/api/collection/1')
+        const res = await this.$axios.get('/api/collection/ac4dba92-49d4-4fc5-a985-3d81181ca8b4')
         this.content = []
         for (const item of res.data.items) {
             this.content.push({
@@ -51,7 +51,7 @@ export default {
         },
         async spin() {
             this.displayed = false
-            const res = await this.$axios.post('/api/collection/1/roll')
+            const res = await this.$axios.post('/api/collection/ac4dba92-49d4-4fc5-a985-3d81181ca8b4/roll')
             this.winningItem = res.data
             this.$refs.spinner.startAnimation({
                 img: res.data.item.design,

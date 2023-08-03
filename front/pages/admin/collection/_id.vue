@@ -7,14 +7,7 @@
         </div>
 
         <!-- Add item -->
-        <div>
-            <input type="text" v-model="item.name">
-            <input type="number" v-model="item.rarity">
-            <FileUploader @file="uploadedFile"/>
-            <div @click="addItem">
-                add
-            </div>
-        </div>
+        <AddItem @add="getCollection" :collection="collection"/>
     </div>
 </template>
     
@@ -22,12 +15,7 @@
 export default {
     data() {
         return {
-            collection: null,
-            item: {
-                name: "",
-                rarity: 0,
-                design: null
-            }
+            collection: null
         }
     },
     async mounted() {
@@ -37,13 +25,6 @@ export default {
         async getCollection() {
             const res = await this.$axios.get(`/api/collection/${this.$route.params.id}`)
             this.collection = res.data
-        },
-        async addItem(){
-            const res = await this.$axios.post(`/api/collection/${this.$route.params.id}/item`, this.item)
-            await this.getCollection()
-        },
-        uploadedFile(f){
-            this.item.design = f
         }
     }
 }

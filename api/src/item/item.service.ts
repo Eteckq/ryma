@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Item } from './entities/item.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Collection } from 'src/collection/entities/collection.entity';
 import { AddItemDto } from 'src/collection/dto/add-item.dto';
 import { ItemToUser } from './entities/item_user.entity';
+import { Rarity } from './entities/rarity.entity';
 
 @Injectable()
 export class ItemService {
@@ -12,8 +13,12 @@ export class ItemService {
     @InjectRepository(Item)
     private readonly itemRepository: Repository<Item>,
     @InjectRepository(ItemToUser)
-    private readonly itemToUserRepository: Repository<ItemToUser>
-  ) { }
+    private readonly itemToUserRepository: Repository<ItemToUser>,
+    @InjectRepository(Rarity)
+    private readonly rarityRepository: Repository<Rarity>
+  ) {
+
+  }
 
 
   async generateItem(item: Item) {
@@ -25,15 +30,22 @@ export class ItemService {
   }
 
   async createItem(payload: AddItemDto) {
+    const rarity = await this.rarityRepository.findOneBy({ id: payload.rarity })
+    if (!rarity) throw new ForbiddenException('Rarity not found')
+
     return await this.itemRepository.save({
       name: payload.name,
-      rarity: payload.rarity,
+      rarity: rarity,
       design: payload.design
     })
   }
 
   async findAll() {
-    return this.itemRepository.find()
+    return await this.itemRepository.find({relations: ['rarity']})
+  }
+
+  async findAllRarity() {
+    return await this.rarityRepository.find()
   }
 }
 

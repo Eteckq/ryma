@@ -1,8 +1,8 @@
 
-import { Entity, Column, PrimaryColumn, BaseEntity, OneToMany, AfterLoad, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, BaseEntity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class CustomBaseEntity extends BaseEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn("uuid")
   public id: string;
 }

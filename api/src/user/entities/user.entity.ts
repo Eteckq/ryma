@@ -16,4 +16,7 @@ export class User extends CustomBaseEntity {
   @Column({default: Role.User})
   role: Role;
 
+  @Column({default: 3})
+  remainingRolls: number
+
 }
