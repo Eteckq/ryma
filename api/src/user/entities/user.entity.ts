@@ -19,4 +19,7 @@ export class User extends CustomBaseEntity {
   @Column({default: 3})
   remainingRolls: number
 
+  @Column({type: 'text', default: null, nullable: true})
+  rpgData: string
+
 }

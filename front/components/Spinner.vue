@@ -40,6 +40,11 @@ export default {
             return this.animate ? this.animationTime : 0
         },
     },
+    watch: {
+        content(){
+            this.generateDisplayed()
+        }
+    },
     methods: {
         generateDisplayed() {
             if (this.animate || this.isOver) return

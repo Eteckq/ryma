@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-for="item of items">
-            {{ item.item.name }}
+            <Item :item="item" />
         </div>
     </div>
 </template>

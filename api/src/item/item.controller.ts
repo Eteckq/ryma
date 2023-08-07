@@ -1,6 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ItemService } from './item.service';
 import { AddRarityDto } from './dto/add-rarity.dto';
+import { Role } from 'src/auth/role.enum';
+import { NeedRole } from 'src/auth/role.decorator';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('item')
 export class ItemController {
@@ -16,6 +19,8 @@ export class ItemController {
     return await this.itemService.findAllRarity()
   }
 
+  @ApiBearerAuth()
+  @NeedRole(Role.Admin)
   @Post('rarity')
   async createRarity(@Body() rarityDto: AddRarityDto){
     return await this.itemService.createRarity(rarityDto)

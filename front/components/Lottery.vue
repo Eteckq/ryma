@@ -23,9 +23,7 @@
 </template>
   
 <script>
-import global from '~/mixins/global'
 export default {
-    mixins: [global],
     props: {
         collection: {
             type: String,

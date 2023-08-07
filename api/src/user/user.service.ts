@@ -25,9 +25,18 @@ export class UserService {
         return await this.userRepository.findOneBy({ id: id })
     }
 
-    async getItemsForUser(id: string){
-        const user = await this.userRepository.findOne({where: {id: id}, relations: ['items', 'items.item']})
-        if(!user) throw new NotFoundException('User not found')
+    async getItemsForUser(id: string) {
+        const user = await this.userRepository.findOne({ where: { id: id }, relations: ['items', 'items.item', 'items.item.rarity'] })
+        if (!user) throw new NotFoundException('User not found')
         return user.items
+    }
+
+    async getRpgData(user: User) {
+        return user.rpgData
+    }
+
+    async saveRpgData(user: User, data: string) {
+        user.rpgData = data
+        return await user.save()
     }
 }
