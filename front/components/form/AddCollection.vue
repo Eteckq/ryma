@@ -1,13 +1,13 @@
 <template>
   <div>
     <FormInput label="Name" v-model="collection.name" />
-    <FileUploader @file="uploadedFile" />
+    <FileUploader class="w-34 h-24" @file="uploadedFile" />
     <FormButton :loading="loading" @clicked="addCollection">
       Add
     </FormButton>
   </div>
 </template>
-    
+
 <script>
 export default {
   data() {
@@ -39,4 +39,3 @@ export default {
   }
 }
 </script>
-  

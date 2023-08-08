@@ -13,7 +13,7 @@
         </div>
     </div>
 </template>
-  
+
 <script>
 export default {
     props: {
@@ -26,7 +26,7 @@ export default {
         return {
             animate: false,
             isOver: false,
-            animationTime: 1000,
+            animationTime: 5000,
             displayed: null,
             shift: null,
             winningItem: null
@@ -67,7 +67,7 @@ export default {
         getShadow(item) {
             if (!item.color) return null
             return `
-            -webkit-box-shadow: inset 0px -15px 30px 5px ${item.color}; 
+            -webkit-box-shadow: inset 0px -15px 30px 5px ${item.color};
             box-shadow: inset 0px -15px 30px 5px ${item.color};
             background-image: url(/api/${item.img});
             `
@@ -100,7 +100,7 @@ export default {
     }
 }
 </script>
-  
+
 <style>
 .bezier {
     animation-timing-function: cubic-bezier(0.4, 0, .45, 1)

@@ -1,7 +1,11 @@
 <template>
   <div>
-    <div @click="collection = c" v-for="c of collections" :key="c.id" class="border p-4 " :to="`/admin/collection/${c.id}`">
-        {{ c.name }}
+    <div class="flex gap-4">
+      <div @click="collection = c" v-for="c of collections" :key="c.id" class="border rounded p-4 cursor-pointer" :to="`/admin/collection/${c.id}`">
+        <p class="text-center">{{ c.name }}</p>
+
+        <img :src="`/api/${c.design}`" alt="" srcset="">
+    </div>
     </div>
 
     <Lottery v-if="collection" :collection="collection.id" />

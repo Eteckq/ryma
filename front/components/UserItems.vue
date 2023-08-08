@@ -1,11 +1,15 @@
 <template>
     <div>
-        <div v-for="item of items">
+      <p @click="page -= 1">prec</p>
+      <p @click="page += 1">next</p>
+        <div class="flex">
+          <div v-for="item of items">
             <Item :item="item" />
+        </div>
         </div>
     </div>
 </template>
-  
+
 <script>
 export default {
     props: {
@@ -16,18 +20,23 @@ export default {
     },
     data() {
         return {
-            items: []
+            items: [],
+            page: 0
         }
+    },
+    watch: {
+      page(){
+        this.getItems()
+      }
     },
     async mounted() {
         await this.getItems()
     },
     methods: {
         async getItems() {
-            const res = await this.$axios.get(`/api/user/items/${this.id}`)
+            const res = await this.$axios.get(`/api/item/user/${this.id}?page=${this.page}`)
             this.items = res.data
         }
     }
 }
 </script>
-  

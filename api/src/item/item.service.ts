@@ -16,29 +16,28 @@ export class ItemService {
     @InjectRepository(ItemToUser)
     private readonly itemToUserRepository: Repository<ItemToUser>,
     @InjectRepository(Rarity)
-    private readonly rarityRepository: Repository<Rarity>
-  ) {
-
-  }
-
+    private readonly rarityRepository: Repository<Rarity>,
+  ) {}
 
   async generateItem(item: Item) {
     return await this.itemToUserRepository.create({
       item: item,
       quality: Math.min(getRandom(5, 105), 100),
-      shiny: getRandom(0, 100) > 95
-    })
+      shiny: getRandom(0, 100) > 95,
+    });
   }
 
   async createItem(payload: AddItemDto) {
-    const rarity = await this.rarityRepository.findOneBy({ id: payload.rarity })
-    if (!rarity) throw new ForbiddenException('Rarity not found')
+    const rarity = await this.rarityRepository.findOneBy({
+      id: payload.rarity,
+    });
+    if (!rarity) throw new ForbiddenException('Rarity not found');
 
     return await this.itemRepository.save({
       name: payload.name,
       rarity: rarity,
-      design: payload.design
-    })
+      design: payload.design,
+    });
   }
 
   async createRarity(rarityDto: AddRarityDto) {
@@ -46,15 +45,25 @@ export class ItemService {
       name: rarityDto.name,
       weight: rarityDto.weight,
       color: rarityDto.color,
-    })
+    });
+  }
+
+  async getItemsForUser(id: string, page: number) {
+    const items = await this.itemToUserRepository.find({
+      where: { user: { id: id } },
+      relations: ['item', 'item.rarity'],
+      take: 5,
+      skip: page * 5,
+    });
+    return items;
   }
 
   async findAll() {
-    return await this.itemRepository.find({ relations: ['rarity'] })
+    return await this.itemRepository.find({ relations: ['rarity'] });
   }
 
   async findAllRarity() {
-    return await this.rarityRepository.find()
+    return await this.rarityRepository.find();
   }
 }
 
