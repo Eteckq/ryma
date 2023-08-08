@@ -65,6 +65,10 @@ export class ItemService {
   async findAllRarity() {
     return await this.rarityRepository.find();
   }
+
+  async deleteRarity(id: string) {
+    return await this.rarityRepository.delete({ id: id });
+  }
 }
 
 function getRandom(min, max) {

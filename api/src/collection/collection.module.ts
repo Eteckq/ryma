@@ -6,12 +6,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ItemModule } from 'src/item/item.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Collection]),
-    ItemModule
-],
+  imports: [TypeOrmModule.forFeature([Collection]), ItemModule],
   controllers: [CollectionController],
   providers: [CollectionService],
-  exports: [CollectionService]
+  exports: [CollectionService],
 })
 export class CollectionModule {}

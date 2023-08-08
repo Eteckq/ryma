@@ -26,7 +26,7 @@ export default {
         return {
             animate: false,
             isOver: false,
-            animationTime: 5000,
+            animationTime: 50,
             displayed: null,
             shift: null,
             winningItem: null

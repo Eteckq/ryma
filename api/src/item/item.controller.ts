@@ -36,6 +36,11 @@ export class ItemController {
     return await this.itemService.findAllRarity();
   }
 
+  @Delete('rarity/:id')
+  async deleteRarity(@Param('id') id: string) {
+    return await this.itemService.deleteRarity(id);
+  }
+
   @ApiBearerAuth()
   @NeedRole(Role.Admin)
   @Post('rarity')

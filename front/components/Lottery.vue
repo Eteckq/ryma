@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="">
         <!-- Spinner -->
         <div class="px-2 md:px-28 my-8" v-if="content">
             <Spinner ref="spinner" @over="displayWin" :content="content" />
@@ -9,19 +9,12 @@
             class="cursor-pointer text-center hover:bg-blue-500 transition-all duration-200 py-2 px-4 text-3xl bg-blue-400 text-white rounded "
             @click="spin">Spin!</div>
         <!-- Item won -->
-        <div class="mx-auto flex justify-center" v-if="displayed">
-            <div class="h-full w-full border p-4 bg-contain bg-no-repeat"
-                :style="{ backgroundImage: `url(/api/${winningItem.item.design})` }">
-                <p>{{ winningItem.item.name }}</p>
-                <p>{{ winningItem.quality }}/100</p>
-                <p v-if="winningItem.shiny">Shiny</p>
-                <p>Normal</p>
-                <p>Rarity: {{ winningItem.item.rarity }}</p>
-            </div>
+        <div class="mx-auto z-50 h-screen flex justify-center absolute inset-0" v-if="displayed">
+            <Item class="w-56 h-80" :item="winningItem" />
         </div>
     </div>
 </template>
-  
+
 <script>
 export default {
     props: {
@@ -89,4 +82,3 @@ export default {
     }
 }
 </script>
-  
