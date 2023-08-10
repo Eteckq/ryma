@@ -9,8 +9,8 @@
             class="cursor-pointer text-center hover:bg-blue-500 transition-all duration-200 py-2 px-4 text-3xl bg-blue-400 text-white rounded "
             @click="spin">Spin!</div>
         <!-- Item won -->
-        <div class="mx-auto z-50 h-screen flex justify-center absolute inset-0" v-if="displayed">
-            <Item class="w-56 h-80" :item="winningItem" />
+        <div class="mx-auto items-center z-50 h-screen flex justify-center absolute inset-0" @click="displayed = false" v-if="displayed">
+            <Item class="w-56 h-96" :item="winningItem" />
         </div>
     </div>
 </template>
@@ -41,7 +41,9 @@ export default {
     },
     methods: {
         displayWin() {
-            this.displayed = true
+            setTimeout(() => {
+              this.displayed = true
+            }, 500);
             this.spinning = false
         },
         async fetchCollection() {

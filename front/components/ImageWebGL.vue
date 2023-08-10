@@ -11,6 +11,9 @@ export default {
     scratch: {
       default: 0,
     },
+    shiny: {
+      default: false
+    },
     random: {
       default: "cc"
     }
@@ -123,6 +126,10 @@ float noise(vec2 P) { return noise(vec3(P, 0.0)); }
       if(floatNoise > ${a}){
         color.a = 0.0;
       }
+    }
+    if(${this.shiny}){
+      color.g = 0.9;
+      color.r = 0.9;
     }
 
     gl_FragColor = color;

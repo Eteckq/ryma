@@ -52,6 +52,11 @@ export class ItemService {
     const items = await this.itemToUserRepository.find({
       where: { user: { id: id } },
       relations: ['item', 'item.rarity'],
+      order: {
+        item: { rarity: { weight: 'ASC' } },
+        shiny: 'DESC',
+        quality: 'DESC',
+      },
       take: 5,
       skip: page * 5,
     });
