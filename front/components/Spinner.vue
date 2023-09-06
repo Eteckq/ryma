@@ -81,6 +81,9 @@ export default {
             -webkit-box-shadow: inset 0px -15px 30px 5px ${item.color};
             box-shadow: inset 0px -15px 30px 5px ${item.color};
             background-image: url(/api/${item.img});
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
             `;
     },
     getRandomItemFromContent() {
